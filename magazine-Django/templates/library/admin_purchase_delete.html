@@ -1,0 +1,38 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Удалить покупку - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Удаление покупки</h1>
+    </div>
+
+    <div class="form-container">
+        <div class="delete-warning">
+            <h2>Вы уверены, что хотите удалить эту покупку?</h2>
+            <div class="book-info-card">
+                <h3>{{ purchase.book.title }}</h3>
+                <p><strong>Автор:</strong> {{ purchase.book.author.name }}</p>
+                <p><strong>Пользователь:</strong> {{ purchase.user.username }}</p>
+                <p><strong>Дата покупки:</strong> {{ purchase.purchase_date|date:"d.m.Y H:i" }}</p>
+                <p><strong>Цена:</strong> {{ purchase.price }} ₽</p>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>Внимание!</strong> После удаления покупки книга будет возвращена в каталог со статусом "Доступна".
+            </div>
+
+            <form method="post" class="delete-form">
+                {% csrf_token %}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">Да, удалить</button>
+                    <a href="{% url 'admin_purchases' %}" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

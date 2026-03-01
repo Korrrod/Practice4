@@ -1,0 +1,106 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ book.title }} - Библиотека{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="book-detail">
+        <div class="book-detail-main">
+            <div class="book-detail-info">
+                <h1>{{ book.title }}</h1>
+                <p class="book-author-large">{{ book.author.name }}</p>
+                <div class="book-meta-large">
+                    {% if book.category %}
+                        <span class="meta-item">Категория: {{ book.category.name }}</span>
+                    {% endif %}
+                    <span class="meta-item">Год: {{ book.year }}</span>
+                    <span class="meta-item status-badge status-{{ book.status }}">{{ book.get_status_display }}</span>
+                </div>
+                
+                {% if book.description %}
+                    <div class="book-description">
+                        <h3>Описание</h3>
+                        <p>{{ book.description }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="book-pricing">
+                    <h3>Цены</h3>
+                    <div class="pricing-grid">
+                        <div class="price-item">
+                            <span class="price-label">Покупка:</span>
+                            <span class="price-value">{{ book.price }} ₽</span>
+                        </div>
+                        {% if book.rental_price_2weeks > 0 %}
+                            <div class="price-item">
+                                <span class="price-label">Аренда (2 недели):</span>
+                                <span class="price-value">{{ book.rental_price_2weeks }} ₽</span>
+                            </div>
+                        {% endif %}
+                        {% if book.rental_price_1month > 0 %}
+                            <div class="price-item">
+                                <span class="price-label">Аренда (1 месяц):</span>
+                                <span class="price-value">{{ book.rental_price_1month }} ₽</span>
+                            </div>
+                        {% endif %}
+                        {% if book.rental_price_3months > 0 %}
+                            <div class="price-item">
+                                <span class="price-label">Аренда (3 месяца):</span>
+                                <span class="price-value">{{ book.rental_price_3months }} ₽</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if user.is_authenticated %}
+                    <div class="book-actions">
+                        {% if book.is_available %}
+                            {% if book.price > 0 %}
+                                <form method="post" action="{% url 'purchase_book' book.pk %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </form>
+                            {% endif %}
+                            
+                            {% if book.rental_price_2weeks > 0 or book.rental_price_1month > 0 or book.rental_price_3months > 0 %}
+                                <div class="rental-options">
+                                    <h4>Арендовать на:</h4>
+                                    <form method="post" action="{% url 'rent_book' book.pk %}" class="rental-form">
+                                        {% csrf_token %}
+                                        <div class="rental-buttons">
+                                            {% if book.rental_price_2weeks > 0 %}
+                                                <button type="submit" name="period" value="2weeks" class="btn btn-primary">
+                                                    2 недели ({{ book.rental_price_2weeks }} ₽)
+                                                </button>
+                                            {% endif %}
+                                            {% if book.rental_price_1month > 0 %}
+                                                <button type="submit" name="period" value="1month" class="btn btn-primary">
+                                                    1 месяц ({{ book.rental_price_1month }} ₽)
+                                                </button>
+                                            {% endif %}
+                                            {% if book.rental_price_3months > 0 %}
+                                                <button type="submit" name="period" value="3months" class="btn btn-primary">
+                                                    3 месяца ({{ book.rental_price_3months }} ₽)
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <p class="unavailable-message">Эта книга недоступна для покупки или аренды.</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p class="login-prompt">Пожалуйста, <a href="{% url 'login' %}">войдите</a>, чтобы купить или арендовать книгу.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="back-link">
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">← Назад к каталогу</a>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+{% block title %}Профиль {{ target_user.username }}{% endblock %}
+{% block content %}
+<div class="card" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+    <div>
+        <h1 style="margin-bottom:4px;">{{ target_user.first_name|default:target_user.username|capfirst }}</h1>
+        <span class="muted">{{ target_user.email }}</span>
+    </div>
+    {% if user.is_authenticated and user != target_user %}
+        <form method="post" action="{% url 'toggle_follow' target_user.username %}">
+            {% csrf_token %}
+            <button type="submit" class="button {% if is_following %}ghost{% else %}primary{% endif %}">
+                {% if is_following %}Отписаться{% else %}Подписаться{% endif %}
+            </button>
+        </form>
+    {% endif %}
+</div>
+
+<h3>Посты</h3>
+{% for post in posts %}
+    <div class="post-card">
+        <div class="post-card-body">
+            <div class="post-card-title"><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></div>
+            <div class="muted" style="margin-bottom:10px;">{{ post.get_visibility_display }}</div>
+            <p>{{ post.content|truncatewords:30 }}</p>
+        </div>
+    </div>
+{% empty %}
+    <p class="empty-state">Нет доступных постов.</p>
+{% endfor %}
+{% endblock %}

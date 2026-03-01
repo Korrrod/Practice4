@@ -1,0 +1,74 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Админ-панель - Библиотека{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Админ-панель</h1>
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">← На главную</a>
+    </div>
+
+    <div class="admin-stats">
+        <div class="stat-card">
+            <h3>Всего книг</h3>
+            <p class="stat-number">{{ total_books }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Активных аренд</h3>
+            <p class="stat-number">{{ total_rentals }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Покупок</h3>
+            <p class="stat-number">{{ total_purchases }}</p>
+        </div>
+    </div>
+
+    <div class="admin-actions">
+        <a href="{% url 'admin_books' %}" class="btn btn-primary">Управление книгами</a>
+        <a href="{% url 'admin_rentals' %}" class="btn btn-primary">Управление арендами</a>
+        <a href="{% url 'admin_purchases' %}" class="btn btn-primary">Управление покупками</a>
+        <a href="{% url 'admin_users' %}" class="btn btn-primary">Пользователи</a>
+        <a href="{% url 'admin_book_add' %}" class="btn btn-success">Добавить книгу</a>
+    </div>
+
+    {% if expired_rentals %}
+        <div class="admin-section">
+            <h2>Просроченные аренды</h2>
+            <div class="rentals-list">
+                {% for rental in expired_rentals %}
+                    <a href="{% url 'admin_user_detail' rental.user.pk %}" style="text-decoration:none; color:inherit; display:block;">
+                        <div class="rental-card expired" style="transition: background 0.2s;" onmouseover="this.style.background='#fff0f0'" onmouseout="this.style.background=''">
+                            <div class="rental-info">
+                                <h3>{{ rental.book.title }}</h3>
+                                <p><strong>Пользователь:</strong> {{ rental.user.first_name|default:rental.user.username }}</p>
+                                <p><strong>Окончание:</strong> {{ rental.end_date|date:"d.m.Y" }}</p>
+                                <p class="status-expired">⚠️ Срок аренды истёк</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if expiring_soon %}
+        <div class="admin-section">
+            <h2>Скоро истекают (3 дня)</h2>
+            <div class="rentals-list">
+                {% for rental in expiring_soon %}
+                    <div class="rental-card expiring-soon">
+                        <div class="rental-info">
+                            <h3>{{ rental.book.title }}</h3>
+                            <p><strong>Пользователь:</strong> {{ rental.user.username }}</p>
+                            <p><strong>Окончание:</strong> {{ rental.end_date|date:"d.m.Y" }}</p>
+                            <p class="status-warning">⚠️ Осталось дней: {{ rental.days_remaining }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

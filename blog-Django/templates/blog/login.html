@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div class="card" style="max-width:400px; margin:0 auto;">
+    <h1>Вход</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}
+                    <span style="color:#e05c20; font-size:12px; display:block;">{{ error }}</span>
+                {% endfor %}
+            </p>
+        {% endfor %}
+        <button type="submit">Войти</button>
+    </form>
+    <p class="muted" style="margin-top:16px; font-size:13px;">
+        Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
+    </p>
+</div>
+{% endblock %}

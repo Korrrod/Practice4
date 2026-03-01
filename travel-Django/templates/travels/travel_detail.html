@@ -1,0 +1,66 @@
+{% extends 'travels/base.html' %}
+
+{% block title %}{{ travel.title }} - Путешествия{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="card-title">{{ travel.title }}</h1>
+                <p class="card-text-muted mb-3">
+                    <i class="bi bi-geo-alt"></i> {{ travel.location }} | 
+                    <i class="bi bi-person"></i> {{ travel.user.username }} | 
+                    <i class="bi bi-calendar"></i> {{ travel.created_at|date:"d.m.Y H:i" }}
+                </p>
+                <div class="mb-4">
+                    <span class="cost-badge fs-5">
+                        <i class="bi bi-currency-exchange"></i> {{ travel.cost|floatformat:0 }} ₽
+                    </span>
+                </div>
+                <div class="mb-4">
+                    <h4>Описание</h4>
+                    <p class="lead">{{ travel.description|linebreaks }}</p>
+                </div>
+                <div class="mb-4">
+                    <h4><i class="bi bi-map"></i> Места для посещения</h4>
+                    <p>{{ travel.places_to_visit|linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Оценки</h4>
+                {% for label, value in ratings %}
+                <div class="mb-3">
+                    <label class="form-label">{{ label }}</label>
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: {{ value }}0%;
+                             background: {% if value <= 3 %}#ef4444{% elif value <= 6 %}#facc15{% else %}#22c55e{% endif %};
+                             color: white;">
+                            {{ value }}/10
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body text-center">
+                <a href="{% url 'travel_list' %}" class="btn btn-outline-primary w-100 mb-2">
+                    <i class="bi bi-arrow-left"></i> Назад к списку
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'travel_create' %}" class="btn btn-success w-100">
+                    <i class="bi bi-plus-circle"></i> Создать свое путешествие
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

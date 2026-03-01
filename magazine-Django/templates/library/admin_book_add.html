@@ -1,0 +1,92 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Добавить книгу - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Добавить книгу</h1>
+        <a href="{% url 'admin_books' %}" class="btn btn-secondary">← Назад</a>
+    </div>
+
+    <div class="form-container">
+        <form method="post" class="book-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Название *</label>
+                <input type="text" name="title" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Автор *</label>
+                <select name="author" required class="form-control">
+                    <option value="">Выберите автора</option>
+                    {% for author in authors %}
+                        <option value="{{ author.id }}">{{ author.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Категория</label>
+                <select name="category" class="form-control">
+                    <option value="">Без категории</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Год написания *</label>
+                <input type="number" name="year" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Описание</label>
+                <textarea name="description" rows="5" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Цена покупки *</label>
+                <input type="number" name="price" step="0.01" required class="form-control">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Цена аренды (2 недели)</label>
+                    <input type="number" name="rental_price_2weeks" step="0.01" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Цена аренды (1 месяц)</label>
+                    <input type="number" name="rental_price_1month" step="0.01" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Цена аренды (3 месяца)</label>
+                    <input type="number" name="rental_price_3months" step="0.01" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Статус *</label>
+                <select name="status" required class="form-control">
+                    {% for status_code, status_name in status_choices %}
+                        <option value="{{ status_code }}" {% if status_code == 'available' %}selected{% endif %}>
+                            {{ status_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Добавить книгу</button>
+                <a href="{% url 'admin_books' %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

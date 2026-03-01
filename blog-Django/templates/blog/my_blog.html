@@ -1,0 +1,68 @@
+{% extends 'blog/base.html' %}
+{% block title %}Мой блог{% endblock %}
+{% block content %}
+
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+    <h1 style="margin:0;">Мой блог</h1>
+    <div style="display:flex; gap:10px; align-items:center;">
+        <button class="button ghost" onclick="document.getElementById('followers-modal').style.display='flex'">
+            Подписчики: {{ followers.count }}
+        </button>
+        <a class="button primary" href="{% url 'create_post' %}">Новый пост</a>
+    </div>
+</div>
+
+{% for post in posts %}
+    <div class="post-card">
+        <div class="post-card-body">
+            <div class="post-card-title"><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></div>
+            <div class="muted" style="margin-bottom:10px;">{{ post.get_visibility_display }}</div>
+            <p>{{ post.content|truncatewords:40 }}</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <div class="tags">
+                    {% for tag in post.tags.all %}
+                        <a href="{% url 'posts_by_tag' tag.slug %}"><span>{{ tag.name }}</span></a>
+                    {% endfor %}
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <a class="button ghost" href="{% url 'edit_post' post.pk %}">Изменить</a>
+                    <a class="button ghost" href="{% url 'delete_post' post.pk %}">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% empty %}
+    <p class="empty-state">У вас пока нет постов. <a href="{% url 'create_post' %}">Написать первый</a></p>
+{% endfor %}
+
+<!-- Модальное окно подписчиков -->
+<div id="followers-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:28px; min-width:300px; max-width:420px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 style="margin:0;">Подписчики</h3>
+            <button onclick="document.getElementById('followers-modal').style.display='none'"
+                    style="background:none; border:none; font-size:20px; cursor:pointer; color:#888; line-height:1;">✕</button>
+        </div>
+        {% if followers %}
+            {% for follow in followers %}
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #e2e2ee;">
+                    <a href="{% url 'user_profile' follow.follower.username %}"
+                       style="font-weight:500; color:#1f1f2e; text-decoration:none;">
+                        {{ follow.follower.first_name|default:follow.follower.username|capfirst }}
+                    </a>
+                    <span class="muted">{{ follow.follower.username }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="muted" style="text-align:center; padding:16px 0;">Подписчиков пока нет</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('followers-modal').addEventListener('click', function(e) {
+        if (e.target === this) this.style.display = 'none';
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+@echo off
+cd /d "%~dp0"
+
+env\Scripts\python.exe manage.py migrate > nul 2>&1
+
+env\Scripts\python.exe manage.py check > nul 2>&1
+if errorlevel 1 (
+    echo Failed to start. Error:
+    echo.
+    env\Scripts\python.exe manage.py check
+    pause
+    exit /b 1
+)
+
+echo Success!
+echo http://127.0.0.1:8000
+echo.
+
+env\Scripts\python.exe manage.py runserver --skip-checks 2>nul
+
+pause

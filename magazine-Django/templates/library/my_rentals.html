@@ -1,0 +1,47 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Мои аренды - Библиотека{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Мои аренды</h1>
+    </div>
+
+    <div class="rentals-list">
+        {% for rental in rentals %}
+            <div class="rental-card {% if rental.is_expired %}expired{% elif rental.days_remaining <= 3 %}expiring-soon{% endif %}">
+                <div class="rental-info">
+                    <h3>{{ rental.book.title }}</h3>
+                    <p class="rental-author">{{ rental.book.author.name }}</p>
+                    <div class="rental-details">
+                        <p><strong>Период аренды:</strong> {{ rental.get_period_display }}</p>
+                        <p><strong>Начало:</strong> {{ rental.start_date|date:"d.m.Y" }}</p>
+                        <p><strong>Окончание:</strong> {{ rental.end_date|date:"d.m.Y" }}</p>
+                        <p><strong>Цена:</strong> {{ rental.price }} ₽</p>
+                        {% if rental.is_active %}
+                            {% if rental.is_expired %}
+                                <p class="status-expired">⚠️ Срок аренды истёк</p>
+                            {% else %}
+                                <p class="status-active">Осталось дней: {{ rental.days_remaining }}</p>
+                                {% if rental.days_remaining <= 3 %}
+                                    <p class="status-warning">⚠️ Скоро истекает срок аренды</p>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <p class="status-inactive">Аренда завершена</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <p>У вас нет арендованных книг</p>
+                <a href="{% url 'book_list' %}" class="btn btn-primary">Перейти к каталогу</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+

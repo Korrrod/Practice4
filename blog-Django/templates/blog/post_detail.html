@@ -1,0 +1,86 @@
+{% extends 'blog/base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+
+<div class="card">
+    <h1>{{ post.title }}</h1>
+    <div class="muted" style="margin-bottom:16px;">
+        Автор: <a href="{% url 'user_profile' post.author.username %}">{{ post.author.first_name|default:post.author.username|capfirst }}</a>
+        &nbsp;·&nbsp; {{ post.get_visibility_display }}
+    </div>
+
+    {% if can_view %}
+        <p>{{ post.content }}</p>
+        <div class="tags">
+            {% for tag in post.tags.all %}
+                <a href="{% url 'posts_by_tag' tag.slug %}"><span>{{ tag.name }}</span></a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="muted">Этот пост скрыт.
+            {% if post.visibility == 'on_request' %} Доступ предоставляется по запросу.{% endif %}
+        </p>
+        {% if user.is_authenticated and post.visibility == 'on_request' %}
+            {% if access_requested %}
+                <p class="muted">Запрос уже отправлен.</p>
+            {% else %}
+                <form method="post" action="{% url 'request_access' post.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">Запросить доступ</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+
+{% if user == post.author %}
+    <div style="margin-bottom:16px; display:flex; gap:10px;">
+        <a class="button ghost" href="{% url 'edit_post' post.pk %}">Редактировать</a>
+        <a class="button ghost" href="{% url 'delete_post' post.pk %}">Удалить</a>
+    </div>
+
+    {% if post.visibility == 'on_request' %}
+        <h3>Запросы на доступ</h3>
+        {% for req in pending_requests %}
+            <div class="card" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <span><strong>{{ req.requester.username }}</strong> <span class="muted">· {{ req.created_at|date:"d.m.Y" }}</span></span>
+                <div style="display:flex; gap:8px;">
+                    <form method="post" action="{% url 'handle_access_request' req.pk 'approve' %}">
+                        {% csrf_token %}<button type="submit" class="button primary">Одобрить</button>
+                    </form>
+                    <form method="post" action="{% url 'handle_access_request' req.pk 'reject' %}">
+                        {% csrf_token %}<button type="submit" class="button ghost">Отклонить</button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <p class="muted">Нет активных запросов.</p>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+{% if can_view %}
+    <h3>Комментарии</h3>
+    {% for comment in post.comments.all %}
+        <div class="card">
+            <div class="muted" style="margin-bottom:6px;">{{ comment.author.first_name|default:comment.author.username|capfirst }} · {{ comment.created_at|date:"d.m.Y" }}</div>
+            <p style="margin:0;">{{ comment.content }}</p>
+        </div>
+    {% empty %}
+        <p class="empty-state">Комментариев нет.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <div class="card">
+            <form method="post">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit">Оставить комментарий</button>
+            </form>
+        </div>
+    {% else %}
+        <p class="muted">Чтобы комментировать, <a href="{% url 'login' %}">войдите</a>.</p>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

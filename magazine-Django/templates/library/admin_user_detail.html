@@ -1,0 +1,88 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ target.first_name|default:target.username }} - Пользователь{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ target.first_name|default:target.username }}</h1>
+        <a href="{% url 'admin_users' %}" class="btn btn-secondary">← Назад</a>
+    </div>
+
+    <div class="admin-section" style="margin-bottom:2rem;">
+        <h2 style="margin-bottom:1rem;">Контакт</h2>
+        <p><strong>Логин:</strong> {{ target.username }}</p>
+        <p><strong>Имя:</strong> {{ target.first_name|default:"—" }}</p>
+        <p><strong>Email:</strong> {{ target.email|default:"—" }}</p>
+        <p><strong>Дата регистрации:</strong> {{ target.date_joined|date:"d.m.Y" }}</p>
+    </div>
+
+    <h2 style="margin-bottom:1rem;">Аренды</h2>
+    {% if rentals %}
+        <div class="admin-table" style="margin-bottom:2rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Книга</th>
+                        <th>Период</th>
+                        <th>Начало</th>
+                        <th>Окончание</th>
+                        <th>Цена</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rental in rentals %}
+                        <tr>
+                            <td>{{ rental.book.title }}</td>
+                            <td>{{ rental.get_period_display }}</td>
+                            <td>{{ rental.start_date|date:"d.m.Y" }}</td>
+                            <td>{{ rental.end_date|date:"d.m.Y" }}</td>
+                            <td>{{ rental.price }} ₽</td>
+                            <td>
+                                {% if rental.is_active %}
+                                    {% if rental.is_expired %}
+                                        <span class="status-expired">Просрочена</span>
+                                    {% else %}
+                                        <span class="status-active">Активна</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="status-inactive">Завершена</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state" style="margin-bottom:2rem;">Нет аренд</p>
+    {% endif %}
+
+    <h2 style="margin-bottom:1rem;">Покупки</h2>
+    {% if purchases %}
+        <div class="admin-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Книга</th>
+                        <th>Дата покупки</th>
+                        <th>Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for purchase in purchases %}
+                        <tr>
+                            <td>{{ purchase.book.title }}</td>
+                            <td>{{ purchase.purchase_date|date:"d.m.Y" }}</td>
+                            <td>{{ purchase.price }} ₽</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">Нет покупок</p>
+    {% endif %}
+</div>
+{% endblock %}

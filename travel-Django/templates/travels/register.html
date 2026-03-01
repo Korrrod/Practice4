@@ -1,0 +1,57 @@
+{% extends 'travels/base.html' %}
+
+{% block title %}Регистрация - Путешествия{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4">
+                    <i class="bi bi-person-plus"></i> Регистрация
+                </h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Имя пользователя</label>
+                        <input type="text" name="username" class="form-control" id="id_username" required autofocus>
+                        {% if form.username.errors %}
+                        <div class="text-danger mt-1">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password1" class="form-label">Пароль</label>
+                        <input type="password" name="password1" class="form-control" id="id_password1" required>
+                        {% if form.password1.errors %}
+                        <div class="text-danger mt-1">{{ form.password1.errors }}</div>
+                        {% endif %}
+                        {% if form.password1.help_text %}
+                        <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password2" class="form-label">Подтверждение пароля</label>
+                        <input type="password" name="password2" class="form-control" id="id_password2" required>
+                        {% if form.password2.errors %}
+                        <div class="text-danger mt-1">{{ form.password2.errors }}</div>
+                        {% endif %}
+                        {% if form.password2.help_text %}
+                        <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p class="mb-0">Уже есть аккаунт? <a href="{% url 'login' %}" style="color: var(--primary-color); font-weight: 600;">Войти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Блог{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo-area">
+            <a class="nav-link {% if request.resolver_match.url_name == 'public_posts' %}nav-active{% endif %}" href="{% url 'public_posts' %}">Посты</a>
+            {% if user.is_authenticated %}
+                <a class="nav-link {% if request.resolver_match.url_name == 'feed' %}nav-active{% endif %}" href="{% url 'feed' %}">Лента</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'my_blog' %}nav-active{% endif %}" href="{% url 'my_blog' %}">Мой блог</a>
+            {% endif %}
+        </div>
+        <div class="user-area">
+            {% if user.is_authenticated %}
+                Привет, <a href="{% url 'user_profile' user.username %}">{{ user.first_name|default:user.username }}</a>
+                <a class="button ghost" href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a class="button ghost" href="{% url 'login' %}">Войти</a>
+                <a class="button primary" href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </div>
+    </header>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+{% block title %}Лента{% endblock %}
+{% block content %}
+<h1>Лента подписок</h1>
+{% for post in posts %}
+    <div class="post-card">
+        <div class="post-card-body">
+            <div class="post-card-title"><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></div>
+            <div class="muted" style="margin-bottom:10px;">
+                <a href="{% url 'user_profile' post.author.username %}">{{ post.author.first_name|default:post.author.username|capfirst }}</a>
+                &nbsp;·&nbsp; {{ post.get_visibility_display }}
+            </div>
+            <p>{{ post.content|truncatewords:40 }}</p>
+            <div class="tags">
+                {% for tag in post.tags.all %}
+                    <a href="{% url 'posts_by_tag' tag.slug %}"><span>{{ tag.name }}</span></a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% empty %}
+    <p class="empty-state">Постов пока нет. Подпишитесь на пользователей, чтобы видеть их записи.</p>
+{% endfor %}
+{% endblock %}

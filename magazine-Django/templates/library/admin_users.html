@@ -1,0 +1,45 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Пользователи - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Пользователи</h1>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">← Назад</a>
+    </div>
+
+    <div class="filters-section" style="margin-bottom:1.5rem;">
+        <form method="get">
+            <input type="text" name="search" value="{{ search }}" placeholder="Поиск по имени или логину..." class="search-input" autocomplete="off">
+        </form>
+    </div>
+
+    <div class="admin-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Логин</th>
+                    <th>Активных аренд</th>
+                    <th>Покупок</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                    <tr>
+                        <td>{{ u.first_name|default:"—" }}</td>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.rentals.count }}</td>
+                        <td>{{ u.purchases.count }}</td>
+                        <td><a href="{% url 'admin_user_detail' u.pk %}" class="btn btn-primary btn-sm">Подробнее</a></td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="5" class="empty-cell">Нет пользователей</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

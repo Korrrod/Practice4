@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+{% block title %}Удалить пост{% endblock %}
+{% block content %}
+<div class="card" style="max-width:480px; margin:0 auto; text-align:center;">
+    <h1>Удалить пост?</h1>
+    <p class="muted" style="margin-bottom:24px;">«{{ post.title }}» будет удалён безвозвратно.</p>
+    <div style="display:flex; gap:10px; justify-content:center;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" style="background:#c0392b;">Да, удалить</button>
+        </form>
+        <a class="button ghost" href="{% url 'post_detail' post.pk %}">Отмена</a>
+    </div>
+</div>
+{% endblock %}

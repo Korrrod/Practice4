@@ -1,0 +1,40 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Удалить аренду - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Удаление аренды</h1>
+    </div>
+
+    <div class="form-container">
+        <div class="delete-warning">
+            <h2>Вы уверены, что хотите удалить эту аренду?</h2>
+            <div class="book-info-card">
+                <h3>{{ rental.book.title }}</h3>
+                <p><strong>Автор:</strong> {{ rental.book.author.name }}</p>
+                <p><strong>Пользователь:</strong> {{ rental.user.username }}</p>
+                <p><strong>Период аренды:</strong> {{ rental.get_period_display }}</p>
+                <p><strong>Начало:</strong> {{ rental.start_date|date:"d.m.Y H:i" }}</p>
+                <p><strong>Окончание:</strong> {{ rental.end_date|date:"d.m.Y H:i" }}</p>
+                <p><strong>Цена:</strong> {{ rental.price }} ₽</p>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>Внимание!</strong> После удаления аренды книга будет возвращена в каталог со статусом "Доступна" (если нет других активных аренд).
+            </div>
+
+            <form method="post" class="delete-form">
+                {% csrf_token %}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">Да, удалить</button>
+                    <a href="{% url 'admin_rentals' %}" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

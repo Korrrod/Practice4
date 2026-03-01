@@ -1,0 +1,105 @@
+{% extends 'travels/base.html' %}
+
+{% block title %}Дневник путешествий{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <div>
+        <h1 style="font-size:2rem; font-weight:700; color:var(--text-primary);">Дневник путешествий</h1>
+        <p style="color:var(--text-secondary); margin-top:0.25rem;">Записывай поездки, оценивай места и смотри чужой опыт</p>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'travel_create' %}" class="btn btn-primary">Создать путешествие</a>
+    {% else %}
+    <a href="{% url 'register' %}" class="btn btn-primary">Начать</a>
+    {% endif %}
+</div>
+
+<div class="card mb-4" style="max-width:100%;">
+    <div class="card-body">
+        <form method="get">
+            <div class="row g-2 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Поиск</label>
+                    <input type="text" name="search" class="form-control"
+                           placeholder="Название или описание..."
+                           value="{{ search_query }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Регион</label>
+                    <input type="text" name="region" class="form-control"
+                           placeholder="Страна или город..."
+                           value="{{ region }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Год</label>
+                    <select name="year" class="form-select">
+                        <option value="">Все годы</option>
+                        {% for y in years %}
+                            <option value="{{ y.year }}" {% if year == y.year|stringformat:"s" %}selected{% endif %}>
+                                {{ y.year }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Сортировка</label>
+                    <select name="sort" class="form-select">
+                        <option value="newest"     {% if sort == 'newest' %}selected{% endif %}>Сначала новые</option>
+                        <option value="oldest"     {% if sort == 'oldest' %}selected{% endif %}>Сначала старые</option>
+                        <option value="rating_high"{% if sort == 'rating_high' %}selected{% endif %}>По оценке ↓</option>
+                        <option value="rating_low" {% if sort == 'rating_low' %}selected{% endif %}>По оценке ↑</option>
+                        <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>По цене ↓</option>
+                        <option value="price_low"  {% if sort == 'price_low' %}selected{% endif %}>По цене ↑</option>
+                    </select>
+                </div>
+                <div class="col-md-1 d-flex gap-1">
+                    <button type="submit" class="btn btn-primary w-100">Найти</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if travels %}
+<div class="row g-4">
+    {% for travel in travels %}
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ travel.title }}</h5>
+                <p class="card-text-muted mb-2">
+                    <i class="bi bi-geo-alt"></i> {{ travel.location }}
+                </p>
+                <p class="card-text">{{ travel.description|truncatewords:20 }}</p>
+                <div class="mb-3">
+                    <span class="cost-badge">
+                        <i class="bi bi-currency-exchange"></i> {{ travel.cost|floatformat:0 }} ₽
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <small class="card-text-muted">
+                        Автор: <strong>{{ travel.user.first_name|default:travel.user.username }}</strong>
+                        &nbsp;·&nbsp;
+                        <i class="bi bi-calendar"></i> {{ travel.created_at|date:"d.m.Y" }}
+                    </small>
+                </div>
+                <a href="{% url 'travel_detail' travel.pk %}" class="btn btn-primary w-100">
+                    Подробнее →
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <i class="bi bi-inbox"></i>
+    <h3>Путешествий не найдено</h3>
+    <p>Попробуйте изменить параметры поиска.</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'travel_create' %}" class="btn btn-primary mt-3">Создать путешествие</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

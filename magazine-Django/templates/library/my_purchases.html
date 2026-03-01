@@ -1,0 +1,33 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Мои покупки - Библиотека{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Мои покупки</h1>
+    </div>
+
+    <div class="purchases-list">
+        {% for purchase in purchases %}
+            <div class="purchase-card">
+                <div class="purchase-info">
+                    <h3>{{ purchase.book.title }}</h3>
+                    <p class="purchase-author">{{ purchase.book.author.name }}</p>
+                    <div class="purchase-details">
+                        <p><strong>Дата покупки:</strong> {{ purchase.purchase_date|date:"d.m.Y H:i" }}</p>
+                        <p><strong>Цена:</strong> {{ purchase.price }} ₽</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <p>У вас нет купленных книг</p>
+                <a href="{% url 'book_list' %}" class="btn btn-primary">Перейти к каталогу</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+

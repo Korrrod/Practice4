@@ -1,0 +1,163 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Каталог книг - Библиотека{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Каталог книг</h1>
+    </div>
+
+    {% if expiring_rentals %}
+        <div class="expiring-banner">
+            {% for item in expiring_rentals %}
+                <div class="expiring-item">
+                    ⏰ До конца срока аренды «{{ item.rental.book.title }}» осталось
+                    {% if item.days_left == 0 %}
+                        менее 1 дня
+                    {% elif item.days_left == 1 %}
+                        1 день
+                    {% elif item.days_left == 2 %}
+                        2 дня
+                    {% else %}
+                        3 дня
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="filters-section">
+        <form method="get" class="filters-form">
+            <div class="filter-group" style="position:relative;">
+                <input type="text" id="search-input" name="search" placeholder="Поиск по названию, автору..."
+                       value="{{ search_query }}" class="search-input" autocomplete="off">
+                <div id="suggestions-box" style="display:none; position:absolute; top:calc(100% + 4px); left:0; right:0; background:white; border:2px solid var(--border-color); border-radius:0.5rem; z-index:100;"></div>
+            </div>
+            
+            <div class="filter-row">
+                <div class="filter-item">
+                    <label>Категория</label>
+                    <select name="category" class="filter-select">
+                        <option value="">Все категории</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if current_category == category.id|stringformat:"s" %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label>Автор</label>
+                    <select name="author" class="filter-select">
+                        <option value="">Все авторы</option>
+                        {% for author in authors %}
+                            <option value="{{ author.id }}" {% if current_author == author.id|stringformat:"s" %}selected{% endif %}>
+                                {{ author.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label>Год</label>
+                    <select name="year" class="filter-select">
+                        <option value="">Все годы</option>
+                        {% for year in years %}
+                            <option value="{{ year }}" {% if current_year == year|stringformat:"s" %}selected{% endif %}>
+                                {{ year }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label>Сортировка</label>
+                    <select name="sort" class="filter-select">
+                        <option value="title" {% if current_sort == 'title' %}selected{% endif %}>По названию</option>
+                        <option value="category" {% if current_sort == 'category' %}selected{% endif %}>По категории</option>
+                        <option value="author" {% if current_sort == 'author' %}selected{% endif %}>По автору</option>
+                        <option value="year" {% if current_sort == 'year' %}selected{% endif %}>По году</option>
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                    <a href="{% url 'book_list' %}" class="btn btn-secondary">Сбросить</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="books-grid">
+        {% for book in books %}
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">{{ book.title }}</h3>
+                    <p class="book-author">{{ book.author.name }}</p>
+                    <p class="book-meta">
+                        {% if book.category %}{{ book.category.name }} • {% endif %}
+                        {{ book.year }} г.
+                    </p>
+                    <div class="book-status">
+                        <span class="status-badge status-{{ book.status }}">{{ book.get_status_display }}</span>
+                        {% if book.status == 'rented' and user.is_authenticated %}
+                            {% with renter=book.current_renter %}
+                                {% if renter == user %}
+                                    <span class="book-meta" style="margin-left:8px;">Вы арендовали</span>
+                                {% endif %}
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="book-prices">
+                        <span class="price">Покупка: {{ book.price }} ₽</span>
+                    </div>
+                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-primary btn-sm">Подробнее</a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <p>Книги не найдены</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+const input = document.getElementById('search-input');
+const box = document.getElementById('suggestions-box');
+
+input.addEventListener('input', function () {
+    const q = this.value.trim();
+    if (q.length === 0) { box.style.display = 'none'; return; }
+
+    fetch(`/search/suggestions/?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(data => {
+            box.innerHTML = '';
+            if (data.length === 0) { box.style.display = 'none'; return; }
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.textContent = item.label;
+                div.style.cssText = 'padding:10px 14px; cursor:pointer; font-size:0.95rem; border-bottom:1px solid var(--border-color); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
+                div.addEventListener('mousedown', function () {
+                    input.value = item.value;
+                    box.style.display = 'none';
+                    input.closest('form').submit();
+                });
+                div.addEventListener('mouseover', function () { this.style.background = 'var(--bg-secondary)'; });
+                div.addEventListener('mouseout', function () { this.style.background = 'white'; });
+                box.appendChild(div);
+            });
+            box.style.display = 'block';
+        });
+});
+
+document.addEventListener('click', function (e) {
+    if (!input.contains(e.target)) box.style.display = 'none';
+});
+</script>
+{% endblock %}
+
+

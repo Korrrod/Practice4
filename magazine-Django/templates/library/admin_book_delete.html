@@ -1,0 +1,45 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Удалить книгу - Админ-панель{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Удаление книги</h1>
+    </div>
+
+    <div class="form-container">
+        <div class="delete-warning">
+            <h2>Вы уверены, что хотите удалить книгу?</h2>
+            <div class="book-info-card">
+                <h3>{{ book.title }}</h3>
+                <p><strong>Автор:</strong> {{ book.author.name }}</p>
+                {% if book.category %}
+                    <p><strong>Категория:</strong> {{ book.category.name }}</p>
+                {% endif %}
+                <p><strong>Год:</strong> {{ book.year }}</p>
+            </div>
+
+            {% if active_rentals %}
+                <div class="alert alert-warning">
+                    <strong>Внимание!</strong> Эта книга находится в активной аренде у {{ active_rentals.count }} пользователя(ей). 
+                    Удаление невозможно до завершения всех аренд.
+                </div>
+                <div class="form-actions">
+                    <a href="{% url 'admin_books' %}" class="btn btn-secondary">Отмена</a>
+                </div>
+            {% else %}
+                <form method="post" class="delete-form">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-danger">Да, удалить</button>
+                        <a href="{% url 'admin_books' %}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
