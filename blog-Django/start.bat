@@ -1,7 +1,19 @@
 @echo off
 cd /d "%~dp0"
 
+if not exist env\Scripts\python.exe (
+    echo Создаю виртуальное окружение...
+    python -m venv env
+    echo Устанавливаю зависимости...
+    env\Scripts\pip.exe install -r requirements.txt > nul 2>&1
+)
+
 env\Scripts\python.exe manage.py migrate > nul 2>&1
+
+if not exist db_ready.flag (
+    env\Scripts\python.exe setup_data.py
+    echo. > db_ready.flag
+)
 
 env\Scripts\python.exe manage.py check > nul 2>&1
 if errorlevel 1 (
