@@ -1,10 +1,11 @@
 @echo off
+chcp 65001 > nul
 cd /d "%~dp0"
 
 if not exist env\Scripts\python.exe (
-    echo Создаю виртуальное окружение...
+    echo Creating virtual environment...
     python -m venv env
-    echo Устанавливаю зависимости...
+    echo Installing dependencies...
     env\Scripts\pip.exe install -r requirements.txt > nul 2>&1
 )
 
