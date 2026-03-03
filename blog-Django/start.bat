@@ -5,8 +5,18 @@ cd /d "%~dp0"
 if not exist env\Scripts\python.exe (
     echo Creating virtual environment...
     python -m venv env
+    if errorlevel 1 (
+        echo ERROR: Python not found. Install Python 3.8+ and try again.
+        pause
+        exit /b 1
+    )
     echo Installing dependencies...
-    env\Scripts\pip.exe install -r requirements.txt > nul 2>&1
+    env\Scripts\pip.exe install -r requirements.txt
+    if errorlevel 1 (
+        echo ERROR: Failed to install dependencies.
+        pause
+        exit /b 1
+    )
 )
 
 env\Scripts\python.exe manage.py migrate > nul 2>&1
