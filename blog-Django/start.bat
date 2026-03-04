@@ -10,6 +10,10 @@ if not exist env\Scripts\python.exe (
         pause
         exit /b 1
     )
+)
+
+env\Scripts\python.exe -c "import django" >nul 2>&1
+if errorlevel 1 (
     echo Installing dependencies...
     env\Scripts\pip.exe install -r requirements.txt
     if errorlevel 1 (
