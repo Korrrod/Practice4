@@ -3,26 +3,21 @@ from django.db import models
 from django.utils.text import slugify
 
 
-# Тег — метка для поста, например "путешествия" или "рецепты"
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=60, unique=True, blank=True)
 
-    # Автоматически делаю slug из названия при сохранении (нужен для URL)
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
         super().save(*args, **kwargs)
 
-    # Как тег отображается в админке и при выводе
     def __str__(self):
         return self.name
 
 
-# Пост — основная единица контента в блоге
 class Post(models.Model):
 
-    # Варианты видимости поста: для всех, только подписчики, по запросу
     class Visibility(models.TextChoices):
         PUBLIC = 'public', 'Публично'
         SUBSCRIBERS = 'subscribers', 'Только подписчики'
@@ -37,11 +32,9 @@ class Post(models.Model):
     class Meta:
         ordering = ['-id']
 
-    # Как пост отображается в админке и при выводе
     def __str__(self):
         return self.title
 
-    # Проверяю, может ли пользователь видеть этот пост
     def can_view(self, user):
         if self.visibility == self.Visibility.PUBLIC:
             return True
@@ -56,7 +49,6 @@ class Post(models.Model):
         return False
 
 
-# Подписка — связь между двумя пользователями
 class Follow(models.Model):
     follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='following')
     following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='followers')
@@ -65,12 +57,10 @@ class Follow(models.Model):
     class Meta:
         unique_together = ('follower', 'following')
 
-    # Как подписка отображается в админке
     def __str__(self):
         return f'{self.follower} подписан на {self.following}'
 
 
-# Запрос на доступ к посту с видимостью "по запросу"
 class AccessRequest(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='access_requests')
     requester = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='access_requests')
@@ -84,12 +74,10 @@ class AccessRequest(models.Model):
     class Meta:
         unique_together = ('post', 'requester')
 
-    # Как запрос отображается в админке
     def __str__(self):
         return f'{self.requester} запрашивает доступ к "{self.post}"'
 
 
-# Комментарий к посту
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
@@ -99,6 +87,5 @@ class Comment(models.Model):
     class Meta:
         ordering = ['created_at']
 
-    # Как комментарий отображается в админке
     def __str__(self):
         return f'Комментарий от {self.author} к "{self.post}"'

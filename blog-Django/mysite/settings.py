@@ -127,3 +127,15 @@ LOGIN_REDIRECT_URL = 'feed'
 LOGOUT_REDIRECT_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'null': {'class': 'logging.NullHandler'},
+    },
+    'loggers': {
+        'django.server': {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
+        'django.request': {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
+    },
+}

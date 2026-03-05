@@ -13,25 +13,27 @@
 </head>
 <body>
     <header class="app-bar">
-        <nav class="app-bar-nav">
-            <a class="app-bar-brand" href="{% url 'public_posts' %}">Блог</a>
-            <a class="app-bar-link {% if request.resolver_match.url_name == 'public_posts' %}active{% endif %}"
-               href="{% url 'public_posts' %}">Посты</a>
-            {% if user.is_authenticated %}
-                <a class="app-bar-link {% if request.resolver_match.url_name == 'feed' %}active{% endif %}"
-                   href="{% url 'feed' %}">Лента</a>
-                <a class="app-bar-link {% if request.resolver_match.url_name == 'my_blog' %}active{% endif %}"
-                   href="{% url 'my_blog' %}">Мой блог</a>
-            {% endif %}
-        </nav>
-        <div class="app-bar-actions">
-            {% if user.is_authenticated %}
-                Привет, <a href="{% url 'user_profile' user.username %}">{{ user.first_name|default:user.username }}</a>
-                <a class="button ghost" href="{% url 'logout' %}">Выйти</a>
-            {% else %}
-                <a class="button ghost" href="{% url 'login' %}">Войти</a>
-                <a class="button primary" href="{% url 'register' %}">Регистрация</a>
-            {% endif %}
+        <div class="app-bar-inner">
+            <nav class="app-bar-nav">
+                <a class="app-bar-brand" href="{% url 'public_posts' %}">Блог</a>
+                <a class="app-bar-link {% if request.resolver_match.url_name == 'public_posts' %}active{% endif %}"
+                   href="{% url 'public_posts' %}">Посты</a>
+                {% if user.is_authenticated %}
+                    <a class="app-bar-link {% if request.resolver_match.url_name == 'feed' %}active{% endif %}"
+                       href="{% url 'feed' %}">Лента</a>
+                    <a class="app-bar-link {% if request.resolver_match.url_name == 'my_blog' %}active{% endif %}"
+                       href="{% url 'my_blog' %}">Мой блог</a>
+                {% endif %}
+            </nav>
+            <div class="app-bar-actions">
+                {% if user.is_authenticated %}
+                    Привет, <a href="{% url 'user_profile' user.username %}">{{ user.first_name|default:user.username }}</a>
+                    <a class="button ghost" href="{% url 'logout' %}">Выйти</a>
+                {% else %}
+                    <a class="button ghost" href="{% url 'login' %}">Войти</a>
+                    <a class="button primary" href="{% url 'register' %}">Регистрация</a>
+                {% endif %}
+            </div>
         </div>
     </header>
 

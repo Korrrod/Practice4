@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% block title %}{% if post %}Редактировать{% else %}Новый пост{% endif %}{% endblock %}
 {% block content %}
-<div class="card" style="max-width:680px;">
+<div class="card" style="max-width:680px; margin:0 auto;">
     <h1>{% if post %}Редактировать пост{% else %}Новый пост{% endif %}</h1>
     <p class="muted" style="margin-bottom:20px;">Заполните заголовок, текст и выберите видимость. Теги — через запятую.</p>
     <form method="post">
