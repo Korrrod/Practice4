@@ -206,6 +206,21 @@ h3 { font-size: 18px; font-weight: 500; margin: 0 0 8px; }
     text-decoration: none;
 }
 
+.app-bar-actions .button.ghost,
+.app-bar-actions .button.primary {
+    background: transparent;
+    color: var(--light);
+    border: 1px solid var(--light);
+}
+
+.app-bar-actions .button.ghost:hover,
+.app-bar-actions .button.primary:hover {
+    background: var(--light);
+    color: var(--dark);
+    opacity: 1;
+    text-decoration: none;
+}
+
 /* ── Links ── */
 a { color: var(--dark); text-decoration: none; }
 a:hover { text-decoration: underline; }
