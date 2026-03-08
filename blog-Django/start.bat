@@ -3,12 +3,14 @@ chcp 65001 > nul
 cd /d "%~dp0"
 
 if not exist env\Scripts\python.exe (
-    python -m venv env
+    echo Creating env...
+    python -m venv env > nul 2>&1
 )
 
 env\Scripts\python.exe -c "import django" >nul 2>&1
 if errorlevel 1 (
-    env\Scripts\pip.exe install -r requirements.txt
+    echo Installing dependencies...
+    env\Scripts\pip.exe install -r requirements.txt > nul 2>&1
 )
 
 env\Scripts\python.exe manage.py migrate > nul 2>&1
