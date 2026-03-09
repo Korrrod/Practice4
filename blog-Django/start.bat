@@ -21,6 +21,6 @@ if not exist db_ready.flag (
 )
 
 echo http://127.0.0.1:8000
-env\Scripts\python.exe manage.py runserver --skip-checks
+env\Scripts\python.exe manage.py runserver --skip-checks > nul
 
 pause
