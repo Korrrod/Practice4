@@ -135,7 +135,8 @@ LOGGING = {
         'null': {'class': 'logging.NullHandler'},
     },
     'loggers': {
-        'django.server': {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
-        'django.request': {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
+        'django.server':         {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
+        'django.request':        {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
+        'django.utils.autoreload': {'handlers': ['null'], 'level': 'WARNING', 'propagate': False},
     },
 }
