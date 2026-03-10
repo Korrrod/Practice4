@@ -122,3 +122,16 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'null': {'class': 'logging.NullHandler'},
+    },
+    'loggers': {
+        'django.server':           {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
+        'django.request':          {'handlers': ['null'], 'level': 'ERROR', 'propagate': False},
+        'django.utils.autoreload': {'handlers': ['null'], 'level': 'WARNING', 'propagate': False},
+    },
+}
