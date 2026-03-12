@@ -21,7 +21,7 @@
                         <p><strong>Цена:</strong> {{ rental.price }} ₽</p>
                         {% if rental.is_active %}
                             {% if rental.is_expired %}
-                                <p class="status-expired">Срок аренды истёк</p>
+                                <p class="status-expired">! Срок аренды истёк</p>
                             {% else %}
                                 <p class="status-active">Осталось дней: {{ rental.days_remaining }}</p>
                                 {% if rental.days_remaining <= 3 %}
