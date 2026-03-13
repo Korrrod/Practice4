@@ -517,7 +517,7 @@ form button:not([type]):hover { opacity: 0.85; }
     border-left: 4px solid var(--dark);
 }
 
-.rental-card.expired      { border-left-color: #c0392b; }
+.rental-card.expired      { border-left-color: var(--dark); }
 .rental-card.expiring-soon { border-left-color: var(--border); }
 
 .rental-info h3, .purchase-info h3 { margin-bottom: 6px; }
