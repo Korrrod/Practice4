@@ -524,7 +524,7 @@ form button:not([type]):hover { opacity: 0.85; }
 .rental-author, .purchase-author { color: var(--border); margin-bottom: 12px; font-size: 13px; }
 .rental-details, .purchase-details { display: grid; gap: 4px; font-size: 13px; }
 
-.status-expired   { color: #c0392b; font-weight: 600; }
+.status-expired   { color: var(--text); font-weight: 600; }
 .status-active    { color: var(--dark); font-weight: 600; }
 .status-warning   { color: #b7860b; font-weight: 600; }
 .status-inactive  { color: var(--border); }
