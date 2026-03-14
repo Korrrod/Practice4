@@ -12,6 +12,9 @@
         {% for rental in rentals %}
             <div class="rental-card {% if rental.is_expired %}expired{% elif rental.days_remaining <= 3 %}expiring-soon{% endif %}">
                 <div class="rental-info">
+                    {% if rental.is_active and rental.is_expired %}
+                        <p class="status-expired">! Срок аренды истёк</p>
+                    {% endif %}
                     <h3>{{ rental.book.title }}</h3>
                     <p class="rental-author">{{ rental.book.author.name }}</p>
                     <div class="rental-details">
@@ -21,7 +24,6 @@
                         <p><strong>Цена:</strong> {{ rental.price }} ₽</p>
                         {% if rental.is_active %}
                             {% if rental.is_expired %}
-                                <p class="status-expired">! Срок аренды истёк</p>
                             {% else %}
                                 <p class="status-active">Осталось дней: {{ rental.days_remaining }}</p>
                                 {% if rental.days_remaining <= 3 %}
