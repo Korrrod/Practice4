@@ -523,6 +523,7 @@ form button:not([type]):hover { opacity: 0.85; }
 .rental-info h3, .purchase-info h3 { margin-bottom: 6px; }
 .rental-author, .purchase-author { color: var(--border); margin-bottom: 12px; font-size: 13px; }
 .rental-details, .purchase-details { display: grid; gap: 4px; font-size: 13px; }
+.rental-details p, .purchase-details p { margin: 0; }
 
 .status-expired   { color: var(--text); font-weight: 600; }
 .status-active    { color: var(--dark); font-weight: 600; }
