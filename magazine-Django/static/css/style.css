@@ -20,6 +20,8 @@ body {
     padding: 0;
 }
 
+
+
 /* ── Navbar ── */
 .app-bar {
     position: sticky;
@@ -155,6 +157,8 @@ a:hover { text-decoration: underline; }
 
 /* ── Buttons ── */
 .button, .btn {
+    -webkit-appearance: none;
+    appearance: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -329,6 +333,7 @@ form button:not([type]):hover { opacity: 0.85; }
 }
 
 .filter-row {
+    margin-top: 13px;
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
@@ -415,9 +420,9 @@ form button:not([type]):hover { opacity: 0.85; }
 }
 
 .book-title { font-size: 15px; font-weight: 600; color: var(--text); margin: 0; }
-.book-author { color: var(--border); font-size: 13px; }
-.book-meta { color: var(--border); font-size: 13px; }
-.book-status { margin-top: auto; padding-top: 8px; }
+.book-author { color: var(--border); font-size: 13px; margin-top: 3px; margin-bottom: 3px; }
+.book-meta { color: var(--border); font-size: 13px; margin-top: 3px; margin-bottom: 3px;}
+.book-status { margin-top: auto; margin-top: 3px; margin-bottom: 3px;}
 .book-prices { font-weight: 600; color: var(--text); font-size: 13px; }
 
 /* ── Status badges ── */
@@ -521,11 +526,11 @@ form button:not([type]):hover { opacity: 0.85; }
 .rental-card.expiring-soon { border-left-color: var(--border); }
 
 .rental-info h3, .purchase-info h3 { margin-bottom: 6px; }
-.rental-author, .purchase-author { color: var(--border); margin-bottom: 12px; font-size: 13px; }
+.rental-author, .purchase-author { color: var(--border); margin: 0 0 6px; font-size: 13px; }
 .rental-details, .purchase-details { display: grid; gap: 4px; font-size: 13px; }
 .rental-details p, .purchase-details p { margin: 0; }
 
-.status-expired   { color: var(--text); font-weight: 600; }
+.status-expired   { color: var(--text); font-weight: 600; margin-top: 0; }
 .status-active    { color: var(--dark); font-weight: 600; }
 .status-warning   { color: #b7860b; font-weight: 600; }
 .status-inactive  { color: var(--border); }
