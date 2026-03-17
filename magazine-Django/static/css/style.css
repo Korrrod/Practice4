@@ -156,7 +156,7 @@ a { color: var(--dark); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ── Buttons ── */
-.button, .btn {
+button, a.btn, .button, .btn {
     -webkit-appearance: none;
     appearance: none;
     display: inline-flex;
@@ -171,41 +171,58 @@ a:hover { text-decoration: underline; }
     letter-spacing: 0.01em;
     cursor: pointer;
     text-decoration: none;
-    border: none;
+    border: 1px solid transparent;
     transition: background 0.2s, color 0.2s, opacity 0.2s;
     background: var(--light);
     color: var(--text);
+    box-sizing: border-box;
+    line-height: 1;
 }
-.button:hover, .btn:hover { text-decoration: none; }
+button:hover, a.btn:hover, .button:hover, .btn:hover { text-decoration: none; }
 
-.button.primary, .btn-primary {
+.btn-primary {
+    background: var(--dark) !important;
+    color: var(--light) !important;
+    border-color: var(--dark) !important;
+}
+.btn-primary:hover { opacity: 0.85; }
+
+.btn-secondary {
+    background: transparent !important;
+    color: var(--text) !important;
+    border-color: var(--dark) !important;
+}
+.btn-secondary:hover {
+    background: var(--dark) !important;
+    color: var(--light) !important;
+}
+
+.button.primary {
     background: var(--dark);
     color: var(--light);
+    border-color: var(--dark);
 }
-.button.primary:hover, .btn-primary:hover { opacity: 0.85; }
-
-.button.ghost, .btn-secondary {
+.button.ghost {
     background: transparent;
     color: var(--text);
-    border: 1px solid var(--dark);
+    border-color: var(--dark);
 }
-.button.ghost:hover, .btn-secondary:hover {
+.button.ghost:hover {
     background: var(--dark);
     color: var(--light);
-    text-decoration: none;
 }
 
 .btn-success {
-    background: var(--dark);
-    color: var(--light);
-    border: none;
+    background: var(--dark) !important;
+    color: var(--light) !important;
+    border-color: var(--dark) !important;
 }
 .btn-success:hover { opacity: 0.85; }
 
 .btn-danger {
-    background: #c0392b;
-    color: var(--light);
-    border: none;
+    background: #c0392b !important;
+    color: var(--light) !important;
+    border-color: #c0392b !important;
 }
 .btn-danger:hover { opacity: 0.85; }
 
