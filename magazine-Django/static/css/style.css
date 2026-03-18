@@ -470,9 +470,7 @@ form button:not([type]):hover { opacity: 0.85; }
 }
 
 .book-detail-main {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 28px;
+    display: block;
 }
 
 .book-detail-image img {
