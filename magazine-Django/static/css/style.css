@@ -183,7 +183,8 @@ button:hover, a.btn:hover, .button:hover, .btn:hover { text-decoration: none; }
 .btn-primary {
     background: var(--dark) !important;
     color: var(--light) !important;
-    border-color: var(--dark) !important;
+    border: 1px solid var(--dark) !important;
+    padding: 10px 24px !important;
 }
 .btn-primary:hover { opacity: 0.85; }
 
