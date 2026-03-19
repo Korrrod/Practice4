@@ -78,6 +78,7 @@ body {
     font-family: inherit;
     display: inline-flex;
     align-items: center;
+    outline: none;
 }
 
 .app-bar-link:hover,
@@ -159,6 +160,7 @@ a:hover { text-decoration: underline; }
 button, a.btn, .button, .btn {
     -webkit-appearance: none;
     appearance: none;
+    outline: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
