@@ -79,6 +79,8 @@ body {
     display: inline-flex;
     align-items: center;
     outline: none;
+    line-height: 1;
+    box-sizing: border-box;
 }
 
 .app-bar-link:hover,
