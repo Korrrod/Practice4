@@ -94,22 +94,24 @@
         {% for book in books %}
             <div class="book-card">
                 <div class="book-info">
-                    <h3 class="book-title">{{ book.title }}</h3>
+                    <div class="book-header">
+                        <h3 class="book-title">{{ book.title }}</h3>
+                        <div class="book-status">
+                            <span class="status-badge status-{{ book.status }}">{{ book.get_status_display }}</span>
+                            {% if book.status == 'rented' and user.is_authenticated %}
+                                {% with renter=book.current_renter %}
+                                    {% if renter == user %}
+                                        <span class="book-meta" style="margin-left:8px;">Вы арендовали</span>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        </div>
+                    </div>
                     <p class="book-author">{{ book.author.name }}</p>
                     <p class="book-meta">
                         {% if book.category %}{{ book.category.name }} • {% endif %}
                         {{ book.year }} г.
                     </p>
-                    <div class="book-status">
-                        <span class="status-badge status-{{ book.status }}">{{ book.get_status_display }}</span>
-                        {% if book.status == 'rented' and user.is_authenticated %}
-                            {% with renter=book.current_renter %}
-                                {% if renter == user %}
-                                    <span class="book-meta" style="margin-left:8px;">Вы арендовали</span>
-                                {% endif %}
-                            {% endwith %}
-                        {% endif %}
-                    </div>
                     <div class="book-prices">
                         <span class="price">Покупка: {{ book.price }} ₽</span>
                     </div>
