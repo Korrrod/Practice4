@@ -108,10 +108,8 @@
                         </div>
                     </div>
                     <p class="book-author">{{ book.author.name }}</p>
-                    <p class="book-meta">
-                        {% if book.category %}{{ book.category.name }} • {% endif %}
-                        {{ book.year }} г.
-                    </p>
+                    {% if book.category %}<p class="book-meta">{{ book.category.name }}</p>{% endif %}
+                    <p class="book-meta">{{ book.year }} г.</p>
                     <div class="book-prices">
                         <span class="price">Покупка: {{ book.price }} ₽</span>
                     </div>
