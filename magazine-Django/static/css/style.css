@@ -441,7 +441,7 @@ form button:not([type]):hover { opacity: 0.85; }
     gap: 6px;
 }
 
-.book-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.book-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .book-title { font-size: 15px; font-weight: 600; color: var(--text); margin: 0; }
 .book-author { color: var(--border); font-size: 13px; margin-top: 3px; margin-bottom: 3px; }
 .book-meta { color: var(--border); font-size: 13px; margin-top: 3px; margin-bottom: 3px;}
@@ -489,6 +489,7 @@ form button:not([type]):hover { opacity: 0.85; }
 
 .book-meta-large {
     display: flex;
+    align-items: center;
     gap: 16px;
     flex-wrap: wrap;
     margin-bottom: 20px;
