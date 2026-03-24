@@ -441,7 +441,7 @@ form button:not([type]):hover { opacity: 0.85; }
     gap: 6px;
 }
 
-.book-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.book-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; height: 42px; overflow: hidden; }
 .book-title {
     font-size: 15px;
     font-weight: 600;
