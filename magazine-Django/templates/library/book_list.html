@@ -98,15 +98,15 @@
                         <h3 class="book-title">{{ book.title }}</h3>
                         <div class="book-status">
                             <span class="status-badge status-{{ book.status }}">{{ book.get_status_display }}</span>
-                            {% if book.status == 'rented' and user.is_authenticated %}
-                                {% with renter=book.current_renter %}
-                                    {% if renter == user %}
-                                        <span class="book-meta" style="margin-left:8px;">Вы арендовали</span>
-                                    {% endif %}
-                                {% endwith %}
-                            {% endif %}
                         </div>
                     </div>
+                    {% if book.status == 'rented' and user.is_authenticated %}
+                        {% with renter=book.current_renter %}
+                            {% if renter == user %}
+                                <p class="book-meta">Вы арендовали</p>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
                     <p class="book-author">{{ book.author.name }}</p>
                     {% if book.category %}<p class="book-meta">{{ book.category.name }}</p>{% endif %}
                     <p class="book-meta">{{ book.year }} г.</p>
