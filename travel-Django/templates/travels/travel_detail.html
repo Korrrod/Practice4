@@ -3,44 +3,39 @@
 {% block title %}{{ travel.title }} - Путешествия{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-8">
-        <div class="card mb-4">
-            <div class="card-body">
-                <h1 class="card-title">{{ travel.title }}</h1>
-                <p class="card-text-muted mb-3">
-                    <i class="bi bi-geo-alt"></i> {{ travel.location }} | 
-                    <i class="bi bi-person"></i> {{ travel.user.username }} | 
-                    <i class="bi bi-calendar"></i> {{ travel.created_at|date:"d.m.Y H:i" }}
-                </p>
-                <div class="mb-4">
-                    <span class="cost-badge fs-5">
-                        <i class="bi bi-currency-exchange"></i> {{ travel.cost|floatformat:0 }} ₽
-                    </span>
-                </div>
-                <div class="mb-4">
-                    <h4>Описание</h4>
-                    <p class="lead">{{ travel.description|linebreaks }}</p>
-                </div>
-                <div class="mb-4">
-                    <h4><i class="bi bi-map"></i> Места для посещения</h4>
-                    <p>{{ travel.places_to_visit|linebreaks }}</p>
-                </div>
+<div class="detail-layout">
+    <div>
+        <div class="detail-card">
+            <h1 style="margin-bottom: 8px;">{{ travel.title }}</h1>
+            <p class="text-muted" style="margin-bottom: 20px;">
+                {{ travel.location }} · {{ travel.user.username }} · {{ travel.created_at|date:"d.m.Y H:i" }}
+            </p>
+            <div style="margin-bottom: 20px;">
+                <span class="cost-badge" style="font-size: 15px; padding: 6px 16px;">{{ travel.cost|floatformat:0 }} ₽</span>
+            </div>
+
+            <div class="detail-section">
+                <h4>Описание</h4>
+                <p>{{ travel.description|linebreaks }}</p>
+            </div>
+
+            <div class="detail-section">
+                <h4>Места для посещения</h4>
+                <p>{{ travel.places_to_visit|linebreaks }}</p>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card mb-4">
-            <div class="card-body">
-                <h4 class="card-title mb-4">Оценки</h4>
+
+    <div>
+        <div class="sidebar-card">
+            <h4>Оценки</h4>
+            <div class="ratings-list">
                 {% for label, value in ratings %}
-                <div class="mb-3">
-                    <label class="form-label">{{ label }}</label>
-                    <div class="progress mb-2" style="height: 25px;">
-                        <div class="progress-bar" role="progressbar"
-                             style="width: {{ value }}0%;
-                             background: {% if value <= 3 %}#ef4444{% elif value <= 6 %}#facc15{% else %}#22c55e{% endif %};
-                             color: white;">
+                <div class="rating-item">
+                    <span class="rating-label">{{ label }}</span>
+                    <div class="rating-bar-track">
+                        <div class="rating-bar {% if value <= 3 %}low{% elif value <= 6 %}medium{% else %}high{% endif %}"
+                             style="width: {{ value }}0%;">
                             {{ value }}/10
                         </div>
                     </div>
@@ -48,19 +43,13 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="card">
-            <div class="card-body text-center">
-                <a href="{% url 'travel_list' %}" class="btn btn-outline-primary w-100 mb-2">
-                    <i class="bi bi-arrow-left"></i> Назад к списку
-                </a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'travel_create' %}" class="btn btn-success w-100">
-                    <i class="bi bi-plus-circle"></i> Создать свое путешествие
-                </a>
-                {% endif %}
-            </div>
+
+        <div class="sidebar-card">
+            <a href="{% url 'travel_list' %}" class="btn btn-secondary btn-full" style="margin-bottom: 10px;">← Назад к списку</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'travel_create' %}" class="btn btn-primary btn-full">Создать своё путешествие</a>
+            {% endif %}
         </div>
     </div>
 </div>
 {% endblock %}
-

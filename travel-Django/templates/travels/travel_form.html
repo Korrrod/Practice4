@@ -3,136 +3,77 @@
 {% block title %}{{ title }} - Путешествия{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card" style="max-width:100%;">
-            <div class="card-body p-5">
-                <h2 class="card-title text-center mb-4">
-                    <i class="bi bi-plus-circle"></i> {{ title }}
-                </h2>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
-                            {{ form.title }}
-                            {% if form.title.errors %}
-                            <div class="text-danger">{{ form.title.errors }}</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.location.id_for_label }}" class="form-label">{{ form.location.label }}</label>
-                            {{ form.location }}
-                            {% if form.location.errors %}
-                            <div class="text-danger">{{ form.location.errors }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
-                        {{ form.description }}
-                        {% if form.description.errors %}
-                        <div class="text-danger">{{ form.description.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.cost.id_for_label }}" class="form-label">{{ form.cost.label }}</label>
-                            {{ form.cost }}
-                            {% if form.cost.errors %}
-                            <div class="text-danger">{{ form.cost.errors }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ form.places_to_visit.id_for_label }}" class="form-label">{{ form.places_to_visit.label }}</label>
-                        {{ form.places_to_visit }}
-                        {% if form.places_to_visit.errors %}
-                        <div class="text-danger">{{ form.places_to_visit.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <h5 class="mt-4 mb-4">Оценки (от 1 до 10)</h5>
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label">{{ form.transport_rating.label }}</label>
-                            <div class="rating-picker" data-target="id_transport_rating">
-                                {% for i in "1234567890" %}{% endfor %}
-                            </div>
-                            <div style="display:none;">{{ form.transport_rating }}</div>
-                            {% if form.transport_rating.errors %}
-                            <div class="text-danger mt-1">{{ form.transport_rating.errors }}</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label">{{ form.safety_rating.label }}</label>
-                            <div class="rating-picker" data-target="id_safety_rating">
-                            </div>
-                            <div style="display:none;">{{ form.safety_rating }}</div>
-                            {% if form.safety_rating.errors %}
-                            <div class="text-danger mt-1">{{ form.safety_rating.errors }}</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label">{{ form.population_rating.label }}</label>
-                            <div class="rating-picker" data-target="id_population_rating">
-                            </div>
-                            <div style="display:none;">{{ form.population_rating }}</div>
-                            {% if form.population_rating.errors %}
-                            <div class="text-danger mt-1">{{ form.population_rating.errors }}</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label">{{ form.vegetation_rating.label }}</label>
-                            <div class="rating-picker" data-target="id_vegetation_rating">
-                            </div>
-                            <div style="display:none;">{{ form.vegetation_rating }}</div>
-                            {% if form.vegetation_rating.errors %}
-                            <div class="text-danger mt-1">{{ form.vegetation_rating.errors }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <a href="{% url 'travel_list' %}" class="btn btn-outline-primary">Отмена</a>
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </div>
-                </form>
+<div class="form-container wide">
+    <h1 style="margin-bottom: 24px;">{{ title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                {{ form.title }}
+                {% if form.title.errors %}<div class="text-danger">{{ form.title.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
+                {{ form.location }}
+                {% if form.location.errors %}<div class="text-danger">{{ form.location.errors }}</div>{% endif %}
             </div>
         </div>
-    </div>
-</div>
-{% endblock %}
 
-{% block extra_css %}
-<style>
-    .rating-picker {
-        display: flex;
-        gap: 6px;
-        margin-top: 6px;
-    }
-    .rating-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        border: 2px solid #d0d0d0;
-        background: white;
-        color: #555;
-        font-weight: 600;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        flex-shrink: 0;
-    }
-    .rating-btn:hover {
-        border-color: var(--primary-color);
-        color: var(--primary-color);
-    }
-    .rating-btn.active-1, .rating-btn.active-2, .rating-btn.active-3
-        { background:#ef4444; border-color:#ef4444; color:white; }
-    .rating-btn.active-4, .rating-btn.active-5, .rating-btn.active-6
-        { background:#facc15; border-color:#facc15; color:#7a5a00; }
-    .rating-btn.active-7, .rating-btn.active-8, .rating-btn.active-9, .rating-btn.active-10
-        { background:#22c55e; border-color:#22c55e; color:white; }
-</style>
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% if form.description.errors %}<div class="text-danger">{{ form.description.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ form.cost.id_for_label }}">{{ form.cost.label }}</label>
+                {{ form.cost }}
+                {% if form.cost.errors %}<div class="text-danger">{{ form.cost.errors }}</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.places_to_visit.id_for_label }}">{{ form.places_to_visit.label }}</label>
+            {{ form.places_to_visit }}
+            {% if form.places_to_visit.errors %}<div class="text-danger">{{ form.places_to_visit.errors }}</div>{% endif %}
+        </div>
+
+        <h3 style="margin: 24px 0 16px;">Оценки (от 1 до 10)</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label>{{ form.transport_rating.label }}</label>
+                <div class="rating-picker" data-target="id_transport_rating"></div>
+                <div style="display:none;">{{ form.transport_rating }}</div>
+                {% if form.transport_rating.errors %}<div class="text-danger">{{ form.transport_rating.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.safety_rating.label }}</label>
+                <div class="rating-picker" data-target="id_safety_rating"></div>
+                <div style="display:none;">{{ form.safety_rating }}</div>
+                {% if form.safety_rating.errors %}<div class="text-danger">{{ form.safety_rating.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.population_rating.label }}</label>
+                <div class="rating-picker" data-target="id_population_rating"></div>
+                <div style="display:none;">{{ form.population_rating }}</div>
+                {% if form.population_rating.errors %}<div class="text-danger">{{ form.population_rating.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.vegetation_rating.label }}</label>
+                <div class="rating-picker" data-target="id_vegetation_rating"></div>
+                <div style="display:none;">{{ form.vegetation_rating }}</div>
+                {% if form.vegetation_rating.errors %}<div class="text-danger">{{ form.vegetation_rating.errors }}</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'travel_list' %}" class="btn btn-secondary">Отмена</a>
+            <button type="submit">Сохранить</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
 
 {% block extra_js %}
@@ -150,9 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.textContent = i;
             btn.addEventListener('click', function () {
                 input.value = i;
-                picker.querySelectorAll('.rating-btn').forEach(b => {
-                    b.className = 'rating-btn';
-                });
+                picker.querySelectorAll('.rating-btn').forEach(b => { b.className = 'rating-btn'; });
                 btn.classList.add('active-' + i);
             });
             picker.appendChild(btn);
@@ -161,4 +100,3 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 {% endblock %}
-
