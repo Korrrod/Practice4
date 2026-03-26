@@ -37,9 +37,7 @@
             <div>
                 <span class="cost-badge">{{ travel.cost|floatformat:0 }} ₽</span>
             </div>
-            <p class="travel-meta">
-                {{ travel.user.username }} · {{ travel.created_at|date:"d.m.Y" }}
-            </p>
+            <p class="travel-meta">{{ travel.year }} г.</p>
             <a href="{% url 'travel_detail' travel.pk %}" class="btn btn-primary">Подробнее</a>
         </div>
     </div>

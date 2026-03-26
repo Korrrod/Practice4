@@ -27,6 +27,7 @@ class Travel(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(10)],
         verbose_name='Оценка растительности'
     )
+    year = models.IntegerField(default=2024, verbose_name='Год путешествия')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 

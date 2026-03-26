@@ -8,7 +8,7 @@
         <div class="detail-card">
             <h1 style="margin-bottom: 8px;">{{ travel.title }}</h1>
             <p class="text-muted" style="margin-bottom: 20px;">
-                {{ travel.location }} · {{ travel.user.username }} · {{ travel.created_at|date:"d.m.Y H:i" }}
+                {{ travel.location }} · {{ travel.user.username }} · {{ travel.year }} г.
             </p>
             <div style="margin-bottom: 20px;">
                 <span class="cost-badge" style="font-size: 15px; padding: 6px 16px;">{{ travel.cost|floatformat:0 }} ₽</span>
