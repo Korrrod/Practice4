@@ -389,16 +389,19 @@ form button[type="submit"]:hover { opacity: 0.85; }
 .search-input,
 .filter-select {
     width: 100%;
-    padding: 10px 14px;
+    height: 42px;
+    padding: 0 14px;
     border-radius: 4px;
     border: 1px solid var(--dark);
     font-size: 14px;
+    line-height: 42px;
     font-family: inherit;
     background: var(--light);
     color: var(--text);
     outline: none;
     transition: box-shadow 0.15s;
     appearance: none;
+    box-sizing: border-box;
 }
 .search-input:focus,
 .filter-select:focus { box-shadow: 0 0 0 1px var(--dark); }
