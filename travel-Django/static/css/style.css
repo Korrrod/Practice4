@@ -406,6 +406,9 @@ form button[type="submit"]:hover { opacity: 0.85; }
 .search-input:focus,
 .filter-select:focus { box-shadow: 0 0 0 1px var(--dark); }
 
+.search-input::placeholder { color: var(--border); }
+.filter-select option { color: var(--text); background: var(--light); }
+
 /* ── Travels grid ── */
 .travels-grid {
     display: grid;
