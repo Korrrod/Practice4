@@ -588,5 +588,20 @@ form button[type="submit"]:hover { opacity: 0.85; }
 @media (max-width: 768px) {
     .detail-layout { grid-template-columns: 1fr; }
     .travels-grid { grid-template-columns: 1fr; }
-    .filter-row { flex-direction: column; }
+    .filter-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .filter-item {
+        flex: none;
+        width: 100%;
+    }
+    .filter-actions {
+        width: 100%;
+        align-items: flex-start;
+    }
+    .filter-actions .btn {
+        width: auto;
+    }
 }
