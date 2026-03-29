@@ -594,8 +594,9 @@ form button[type="submit"]:hover { opacity: 0.85; }
         gap: 8px;
     }
     .filter-item {
-        flex: none;
-        width: 100%;
+        flex: none !important;
+        width: 100% !important;
+        height: auto !important;
     }
     .filter-actions {
         width: 100%;
