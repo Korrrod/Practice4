@@ -586,6 +586,21 @@ form button[type="submit"]:hover { opacity: 0.85; }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
+    .app-bar { height: auto; }
+    .app-bar-inner {
+        flex-wrap: wrap;
+        padding: 10px 16px;
+        gap: 6px;
+    }
+    .app-bar-nav {
+        flex-wrap: wrap;
+        gap: 4px;
+        width: 100%;
+    }
+    .app-bar-brand { margin-right: 8px; font-size: 18px; }
+    .app-bar-actions { margin-left: 0; width: 100%; justify-content: flex-start; }
+    .app-bar-actions a[href="#"] { display: none; }
+}
     .detail-layout { grid-template-columns: 1fr; }
     .travels-grid { grid-template-columns: 1fr; }
     .filter-row {
