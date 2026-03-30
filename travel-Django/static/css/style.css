@@ -103,6 +103,7 @@ body {
     text-decoration: none;
 }
 .app-bar-actions a:hover { text-decoration: underline; }
+.app-bar-greeting { color: var(--light); font-size: 14px; white-space: nowrap; }
 
 .app-bar-actions .button.ghost,
 .app-bar-actions .button.primary {
@@ -590,16 +591,20 @@ form button[type="submit"]:hover { opacity: 0.85; }
     .app-bar-inner {
         flex-wrap: wrap;
         padding: 10px 16px;
-        gap: 6px;
+        gap: 8px;
     }
     .app-bar-nav {
         flex-wrap: wrap;
-        gap: 4px;
+        gap: 6px;
         width: 100%;
     }
-    .app-bar-brand { margin-right: 8px; font-size: 18px; }
-    .app-bar-actions { margin-left: 0; width: 100%; justify-content: flex-start; }
-    .app-bar-actions a[href="#"] { display: none; }
+    .app-bar-brand { margin-right: 4px; font-size: 18px; }
+    .app-bar-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+    }
 }
     .detail-layout { grid-template-columns: 1fr; }
     .travels-grid { grid-template-columns: 1fr; }

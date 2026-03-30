@@ -31,7 +31,7 @@
             </nav>
             <div class="app-bar-actions">
                 {% if user.is_authenticated %}
-                    Привет, <a href="#">{{ user.first_name|default:user.username }}</a>
+                    <span class="app-bar-greeting">Привет, {{ user.first_name|default:user.username }}</span>
                     <a class="button ghost" href="{% url 'logout' %}">Выйти</a>
                 {% else %}
                     <a class="button ghost" href="{% url 'login' %}">Войти</a>
