@@ -18,15 +18,10 @@
                 <a class="app-bar-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
                    href="{% url 'home' %}">Главная</a>
                 {% if user.is_authenticated %}
-                    <a class="app-bar-link {% if request.resolver_match.url_name == 'travel_list' %}active{% endif %}"
-                       href="{% url 'travel_list' %}">Все путешествия</a>
                     <a class="app-bar-link {% if request.resolver_match.url_name == 'my_travels' %}active{% endif %}"
                        href="{% url 'my_travels' %}">Мои путешествия</a>
                     <a class="app-bar-link {% if request.resolver_match.url_name == 'travel_create' %}active{% endif %}"
                        href="{% url 'travel_create' %}">Создать</a>
-                {% else %}
-                    <a class="app-bar-link {% if request.resolver_match.url_name == 'travel_list' %}active{% endif %}"
-                       href="{% url 'travel_list' %}">Все путешествия</a>
                 {% endif %}
             </nav>
             <div class="app-bar-actions">
