@@ -585,6 +585,35 @@ form button[type="submit"]:hover { opacity: 0.85; }
 }
 .sidebar-card h4 { margin-bottom: 16px; }
 
+/* ── Rating slider ── */
+.rating-slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.rating-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    accent-color: var(--dark);
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0;
+    width: auto;
+}
+
+.rating-slider-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    min-width: 36px;
+    text-align: right;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
     .detail-layout { grid-template-columns: 1fr; }

@@ -44,25 +44,37 @@
         <div class="form-row">
             <div class="form-group">
                 <label>{{ form.transport_rating.label }}</label>
-                <div class="rating-picker" data-target="id_transport_rating"></div>
+                <div class="rating-slider-wrap">
+                    <input type="range" min="1" max="10" class="rating-slider" data-target="id_transport_rating">
+                    <span class="rating-slider-value"></span>
+                </div>
                 <div style="display:none;">{{ form.transport_rating }}</div>
                 {% if form.transport_rating.errors %}<div class="text-danger">{{ form.transport_rating.errors }}</div>{% endif %}
             </div>
             <div class="form-group">
                 <label>{{ form.safety_rating.label }}</label>
-                <div class="rating-picker" data-target="id_safety_rating"></div>
+                <div class="rating-slider-wrap">
+                    <input type="range" min="1" max="10" class="rating-slider" data-target="id_safety_rating">
+                    <span class="rating-slider-value"></span>
+                </div>
                 <div style="display:none;">{{ form.safety_rating }}</div>
                 {% if form.safety_rating.errors %}<div class="text-danger">{{ form.safety_rating.errors }}</div>{% endif %}
             </div>
             <div class="form-group">
                 <label>{{ form.population_rating.label }}</label>
-                <div class="rating-picker" data-target="id_population_rating"></div>
+                <div class="rating-slider-wrap">
+                    <input type="range" min="1" max="10" class="rating-slider" data-target="id_population_rating">
+                    <span class="rating-slider-value"></span>
+                </div>
                 <div style="display:none;">{{ form.population_rating }}</div>
                 {% if form.population_rating.errors %}<div class="text-danger">{{ form.population_rating.errors }}</div>{% endif %}
             </div>
             <div class="form-group">
                 <label>{{ form.vegetation_rating.label }}</label>
-                <div class="rating-picker" data-target="id_vegetation_rating"></div>
+                <div class="rating-slider-wrap">
+                    <input type="range" min="1" max="10" class="rating-slider" data-target="id_vegetation_rating">
+                    <span class="rating-slider-value"></span>
+                </div>
                 <div style="display:none;">{{ form.vegetation_rating }}</div>
                 {% if form.vegetation_rating.errors %}<div class="text-danger">{{ form.vegetation_rating.errors }}</div>{% endif %}
             </div>
@@ -79,23 +91,24 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.rating-picker').forEach(function (picker) {
-        const inputId = picker.dataset.target;
-        const input = document.getElementById(inputId);
-        const current = parseInt(input.value) || 5;
+    document.querySelectorAll('.rating-slider').forEach(function (slider) {
+        const inputId = slider.dataset.target;
+        const hiddenInput = document.getElementById(inputId);
+        const valueLabel = slider.parentElement.querySelector('.rating-slider-value');
 
-        for (let i = 1; i <= 10; i++) {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'rating-btn' + (i === current ? ' active-' + i : '');
-            btn.textContent = i;
-            btn.addEventListener('click', function () {
-                input.value = i;
-                picker.querySelectorAll('.rating-btn').forEach(b => { b.className = 'rating-btn'; });
-                btn.classList.add('active-' + i);
-            });
-            picker.appendChild(btn);
+        const current = parseInt(hiddenInput.value) || 5;
+        slider.value = current;
+
+        function update(val) {
+            hiddenInput.value = val;
+            valueLabel.textContent = val + '/10';
+            if (val <= 3)      { slider.style.accentColor = '#c0392b'; valueLabel.style.color = '#c0392b'; }
+            else if (val <= 6) { slider.style.accentColor = '#b7860b'; valueLabel.style.color = '#b7860b'; }
+            else               { slider.style.accentColor = '#2C7A2C'; valueLabel.style.color = '#2C7A2C'; }
         }
+
+        update(current);
+        slider.addEventListener('input', function () { update(parseInt(this.value)); });
     });
 });
 </script>
