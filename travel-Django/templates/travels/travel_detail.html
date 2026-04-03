@@ -45,7 +45,7 @@
         </div>
 
         <div class="sidebar-card">
-            <a href="{% url 'home' %}" class="btn btn-secondary btn-full" style="margin-bottom: 10px;">← Назад к списку</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary btn-full">← Назад к списку</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'travel_create' %}" class="btn btn-primary btn-full">Создать своё путешествие</a>
             {% endif %}

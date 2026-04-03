@@ -95,22 +95,23 @@
             <div class="book-card">
                 <div class="book-info">
                     <div class="book-header">
-                        <div>
-                            <h3 class="book-title">{{ book.title }}</h3>
-                            {% if book.category %}<p class="book-meta">{{ book.category.name }}</p>{% endif %}
-                            <p class="book-meta">{{ book.year }} г.</p>
-                        </div>
+                        <h3 class="book-title">{{ book.title }}</h3>
                         <div class="book-status">
-                            <span class="status-badge status-{{ book.status }}">{{ book.get_status_display }}</span>
+                            {% if book.status == 'rented' and user.is_authenticated %}
+                                {% with renter=book.current_renter %}
+                                    {% if renter == user %}
+                                        <span class="status-badge status-rented">Вы арендовали</span>
+                                    {% else %}
+                                        <span class="status-badge status-rented">В аренде</span>
+                                    {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                <span class="status-badge status-{{ book.status }}">{{ book.get_status_display }}</span>
+                            {% endif %}
                         </div>
                     </div>
-                    {% if book.status == 'rented' and user.is_authenticated %}
-                        {% with renter=book.current_renter %}
-                            {% if renter == user %}
-                                <p class="book-meta">Вы арендовали</p>
-                            {% endif %}
-                        {% endwith %}
-                    {% endif %}
+                    {% if book.category %}<p class="book-meta">{{ book.category.name }}</p>{% endif %}
+                    <p class="book-meta">{{ book.year }} г.</p>
                     <p class="book-author">{{ book.author.name }}</p>
                     <div class="book-prices">
                         <span class="price">Покупка: {{ book.price }} ₽</span>

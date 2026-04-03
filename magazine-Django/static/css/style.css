@@ -438,10 +438,10 @@ form button:not([type]):hover { opacity: 0.85; }
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0;
 }
 
-.book-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.book-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; height: 42px; overflow: hidden; }
 .book-title {
     font-size: 15px;
     font-weight: 600;
@@ -457,7 +457,7 @@ form button:not([type]):hover { opacity: 0.85; }
 .book-author { color: var(--border); font-size: 13px; margin-top: 3px; margin-bottom: 3px; }
 .book-meta { color: var(--border); font-size: 13px; margin-top: 3px; margin-bottom: 3px;}
 .book-status { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-.book-prices { font-weight: 600; color: var(--text); font-size: 13px; margin-top: auto; }
+.book-prices { font-weight: 600; color: var(--text); font-size: 13px; margin-top: 10px; margin-bottom: 10px; }
 
 /* ── Status badges ── */
 .status-badge {
@@ -531,7 +531,7 @@ form button:not([type]):hover { opacity: 0.85; }
 .book-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
 
 .rental-options { margin-top: 12px; }
-.rental-options h4 { margin-bottom: 10px; }
+.rental-options h4 { margin-top: 0; margin-bottom: 10px; }
 .rental-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
 
 .back-link { margin-top: 12px; }
